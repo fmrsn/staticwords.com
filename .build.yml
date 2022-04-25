@@ -1,0 +1,42 @@
+image: debian/stable
+arch: amd64
+packages:
+  - pandoc
+  - wget
+sources:
+  - git@git.sr.ht:~fmrsn/staticwords.com
+secrets:
+  - 270fb008-0636-482b-880e-d6c2472ada6c
+oauth: pages.sr.ht/PAGES:RW
+environment:
+  PATH: /home/build/bin:/bin:/usr/bin
+  minify_version: v2.11.1
+  minify_checksum: 826cb78ddc91f61553399b8649fabab816bb90e8e43d8c111fff462ee331e4c5
+  site: staticwords.com
+tasks:
+  - install-minify: |
+      wget -q -O minify.tar.gz https://github.com/tdewolff/minify/releases/download/$minify_version/minify_linux_amd64.tar.gz
+      sha256sum -c <<EOF
+      $minify_checksum  minify.tar.gz
+      EOF
+      mkdir -p bin
+      tar -C bin -xzf minify.tar.gz minify
+      rm -f minify.tar.gz
+      minify --version
+  - build: |
+      cd $site
+      make SITE=$site
+  - package: |
+      cd $site
+      make SITE=$site dist
+  - deploy: |
+      cd $site
+      acurl -fs -F content=@site.tar.gz https://pages.sr.ht/publish/$site
+  - mirror: |
+      ssh-keyscan github.com >>$HOME/.ssh/known_hosts
+      cd $site
+      git push --mirror git@github.com:fmrsn/$site
+triggers:
+  - action: email
+    condition: failure
+    to: F. Emerson <fmrsn@fmrsn.com>
