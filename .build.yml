@@ -1,7 +1,6 @@
 image: debian/stable
 arch: amd64
 packages:
-  - pandoc
   - wget
 sources:
   - git@git.sr.ht:~fmrsn/staticwords.com
@@ -10,16 +9,25 @@ secrets:
 oauth: pages.sr.ht/PAGES:RW
 environment:
   PATH: /home/build/bin:/bin:/usr/bin
+  site: staticwords.com
   minify_version: v2.11.1
   minify_checksum: 826cb78ddc91f61553399b8649fabab816bb90e8e43d8c111fff462ee331e4c5
-  site: staticwords.com
+  pandoc_version: '2.18'
+  pandoc_checksum: 103df36dc21081b7205d763ef7705e340eb0ea7e18694239b328a549892cc007
 tasks:
+  - install-pandoc: |
+      wget -q -O pandoc.tar.gz https://github.com/jgm/pandoc/releases/download/$pandoc_version/pandoc-$pandoc_version-linux-amd64.tar.gz
+      sha256sum -c <<EOF
+      $pandoc_checksum  pandoc.tar.gz
+      EOF
+      tar -xzf pandoc.tar.gz --strip-component 1 pandoc-$pandoc_version/bin/pandoc
+      rm -f pandoc.tar.gz
+      pandoc --version
   - install-minify: |
       wget -q -O minify.tar.gz https://github.com/tdewolff/minify/releases/download/$minify_version/minify_linux_amd64.tar.gz
       sha256sum -c <<EOF
       $minify_checksum  minify.tar.gz
       EOF
-      mkdir -p bin
       tar -C bin -xzf minify.tar.gz minify
       rm -f minify.tar.gz
       minify --version
