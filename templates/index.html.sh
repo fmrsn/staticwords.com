@@ -1,3 +1,5 @@
+set -eu
+
 cat <<EOF
 <!DOCTYPE html>
 <html lang="en">

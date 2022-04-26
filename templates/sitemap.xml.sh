@@ -1,3 +1,5 @@
+set -eu
+
 # TODO(fmrsn): lastmod should be stat(index.html).mtime instead.
 cat <<EOF
 <urlset>

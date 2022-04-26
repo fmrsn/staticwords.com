@@ -7,20 +7,21 @@ all: site FORCE
 
 dist: site.tar.gz FORCE
 
+clean: FORCE
+	rm -fr site.tar.gz site-min site
+
 watch: FORCE
 	{ python3 -m http.server --directory site & }; \
 	python3=$$!; \
 	trap "kill $$python3; exit 0" EXIT INT TERM; \
 	find Makefile static templates | entr -d -- $(MAKE) clean all
 
-clean: FORCE
-	rm -fr site.tar.gz site-min site
-
 site:
-	cp -r static $@
-	SITE=$(SITE) sh -eu templates/index.html.sh >$@/index.html
-	SITE=$(SITE) sh -eu templates/sitemap.xml.sh >$@/sitemap.xml
-	SITE=$(SITE) sh -eu templates/robots.txt.sh >$@/robots.txt
+	export SITE=$(SITE); \
+	cp -r static $@; \
+	(cd templates; sh index.html.sh) >$@/index.html; \
+	(cd templates; sh sitemap.xml.sh) >$@/sitemap.xml; \
+	(cd templates; sh robots.txt.sh) >$@/robots.txt;
 
 site.tar.gz: site
 	cd $<; minify -arso ../$<-min/ .
