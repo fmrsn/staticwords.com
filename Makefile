@@ -23,7 +23,7 @@ site:
 	SITE=$(SITE) sh -eu templates/robots.txt.sh >$@/robots.txt
 
 site.tar.gz: site
-	cd $<; minify -arso ../site-min/ .
-	tar -C site-min -czf site.tar.gz .
+	cd $<; minify -arso ../$<-min/ .
+	tar -C $<-min -czf $@ .
 
 FORCE:
