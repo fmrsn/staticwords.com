@@ -13,7 +13,7 @@ cat <<EOF
 <link rel="stylesheet" href="main.css" />
 <title>Static Words</title>
 <article>
-	<h1>Static Words is under construction.</h1>
+	<p>Static Words is under construction.</p>
 </article>
 </html>
 EOF

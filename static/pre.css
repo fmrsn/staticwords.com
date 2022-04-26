@@ -5,7 +5,7 @@
 	flex-direction: column-reverse;
 	margin-bottom: calc(2 * var(--spacing));
 	margin-top: calc(2 * var(--spacing));
-	max-width: 35rem; /* TODO(emerson): Parameterize based on --spacing. */
+	max-width: 35rem; /* TODO(fmrsn): Parameterize based on --spacing. */
 	padding: var(--spacing);
 }
 
@@ -24,7 +24,7 @@
 	margin-bottom: calc(-1 * var(--spacing));
 }
 
-/* TODO(emerson): Revise if we do something special on the main stylesheet. */
+/* TODO(fmrsn): Revise if we do something special on the main stylesheet. */
 hr + .slide {
 	margin-top: var(--spacing);
 }
