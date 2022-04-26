@@ -20,7 +20,8 @@ tasks:
       sha256sum -c <<EOF
       $pandoc_checksum  pandoc.tar.gz
       EOF
-      tar -xzf pandoc.tar.gz --strip-component 1 pandoc-$pandoc_version/bin/pandoc
+      mkdir -p bin
+      tar -C bin -xzf pandoc.tar.gz --strip-component 2 pandoc-$pandoc_version/bin/pandoc
       rm -f pandoc.tar.gz
       pandoc --version
   - install-minify: |
@@ -28,6 +29,7 @@ tasks:
       sha256sum -c <<EOF
       $minify_checksum  minify.tar.gz
       EOF
+      mkdir -p bin
       tar -C bin -xzf minify.tar.gz minify
       rm -f minify.tar.gz
       minify --version
