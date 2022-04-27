@@ -30,11 +30,6 @@
 	src: url("charter_bold_italic.woff2") format("woff2");
 }
 
-/* TODO(fmrsn): Parameterize body text width. */
-:root {
-	--spacing: 1.5rem;
-}
-
 *,
 ::before,
 ::after {
@@ -43,22 +38,79 @@
 	padding: 0;
 }
 
+:root {
+	--hmargin: 32px;
+	--vmargin: 32px;
+}
+
 html {
-	font-family: Charter, serif;
-	font-size: 16px;
+	font: normal 20px/var(--hmargin) Charter, serif;
 	hyphens: auto;
 	-moz-hyphens: auto;
 	-ms-hyphens: auto;
 	-webkit-hyphens: auto;
-	line-height: 1.5;
 }
 
 body {
+	--main-maxw: 30rem;
+	--body-maxw: calc(var(--main-maxw) + 2*var(--vmargin));
 	margin: auto;
-	max-width: calc(35rem + 2 * var(--spacing)); /* TODO(fmrsn): Parameterize body text width. */
+	max-width: var(--body-max-w);
 }
 
 body > * {
-	margin-left: var(--spacing);
-	margin-right: var(--spacing);
+	margin-left: var(--vmargin);
+	margin-right: var(--vmargin);
+}
+
+body > * > * {
+	max-width: var(--main-maxw);
+}
+
+p {
+	margin-bottom: var(--hmargin);
+	margin-top: var(--hmargin);
+}
+
+aside {
+	font-size: 16px;
+	line-height: 24px;
+}
+
+/* TODO(fmrsn): Revise border color. */
+aside {
+	--aside-border: 1px solid gainsboro;
+	--aside-padding: 3px;
+	--aside-margin: -4px; /* -(padding + border) */
+	border-bottom: var(--aside-border);
+	border-top: var(--aside-border);
+	margin-bottom: var(--aside-margin);
+	margin-top: var(--aside-margin);
+	padding-top: var(--aside-padding);
+	padding-bottom: var(--aside-padding);
+}
+
+aside :first-child {
+	margin-top: 0;
+}
+
+aside :last-child {
+	margin-bottom: 0;
+}
+
+@media (min-width: 1024px) {
+	body {
+		--margin-maxw: calc(var(--main-maxw) / 2);
+		max-width: calc(var(--body-maxw) + var(--vmargin) + var(--margin-maxw));
+	}
+
+	article {
+		position: relative;
+	}
+
+	aside {
+		position: absolute;
+		right: 0;
+		max-width: var(--margin-maxw);
+	}
 }
